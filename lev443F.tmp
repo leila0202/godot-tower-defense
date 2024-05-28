@@ -7,5 +7,3 @@
 scale = Vector2(0.999198, 0.999802)
 script = ExtResource("1_lnqtw")
 unit_scene = ExtResource("1_sdf61")
-
-[connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]
