@@ -28,10 +28,15 @@ func _input(event):
 	if event is InputEventMouseButton:
 		if !event.is_pressed() && event.button_index == MOUSE_BUTTON_LEFT:
 			unit = unit_scene.instantiate()
-			unit.position = event.position.snapped(Vector2.ONE * CELL_HEIGHT)
-			unit.position += Vector2.ONE * CELL_HEIGHT/2
-			#unit.input_event.connect(_hovered)
+			unit.position = floor(event.position/CELL_HEIGHT)*CELL_HEIGHT + (Vector2.ONE * CELL_HEIGHT/2)
+			print(unit.position)
 			add_child(unit)
+			
+			if _hovered(unit):
+				unit.queue_free()
+				print("was freeed")
+			else:
+				print("miau")
 	elif event is InputEventMouseMotion:
 		pass
 	
@@ -41,7 +46,7 @@ func _process(delta):
 
 func _hovered():
 	print("miau")
-
+	
 
 func _on_child_entered_tree(node):
 	
