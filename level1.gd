@@ -42,7 +42,7 @@ func spawn_unit(pos, type):
 	if(!space_state.intersect_point(point)):
 		add_child(tower)
 
-func _input(event):
+func _unhandled_input(event):
 	if event is InputEventMouseButton:
 		if !event.is_pressed() && event.button_index == MOUSE_BUTTON_LEFT:
 			var pos = floor(event.position/CELL_SZ)*CELL_SZ + (Vector2.ONE * CELL_SZ/2)
