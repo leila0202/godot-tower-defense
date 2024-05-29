@@ -1,9 +1,17 @@
 extends Node2D
 
+const CELL_SZ = 100
+const BOARD_SZ = 5
+var bounds: Vector2i
+
 var tower_scene: PackedScene
 var enemy_scene: PackedScene
 
-var vp_size = DisplayServer.screen_get_size()
+var tower
+var space_state
+
+
+@onready var vp_size = get_tree().get_root().size
 @onready var unit_select = $CanvasLayer/UnitSelect
 
 
@@ -11,22 +19,22 @@ var vp_size = DisplayServer.screen_get_size()
 func _ready():
 	pass
 
-const CELL_SZ = 100
 func _draw():
-	var start_y = Vector2(0,CELL_SZ)
-	var end_y = Vector2(vp_size.x,CELL_SZ)
-	var start_x = Vector2(CELL_SZ,0)
-	var end_x = Vector2(CELL_SZ, vp_size.y)
-	for n in 5:
+	var start_y = Vector2i(floor(vp_size.x/2)-(CELL_SZ*BOARD_SZ)/2,0).snapped(Vector2.ONE * CELL_SZ)
+	bounds.x = start_y.x
+	var end_y = Vector2i(floor(vp_size.x/2) + (CELL_SZ*BOARD_SZ)/2,0).snapped(Vector2.ONE * CELL_SZ)
+	
+	var start_x = Vector2i(floor(vp_size.x/2)-(CELL_SZ*BOARD_SZ)/2, 0).snapped(Vector2.ONE * CELL_SZ)
+	var end_x = Vector2i(floor(vp_size.x/2)-(CELL_SZ*BOARD_SZ)/2, CELL_SZ*BOARD_SZ).snapped(Vector2.ONE * CELL_SZ)
+	for n in BOARD_SZ+1:
 			draw_line(start_y,end_y, Color.WHITE, 1.0)
 			draw_line(start_x, end_x, Color.WHITE, 1.0)
 			start_y.y += CELL_SZ
 			end_y.y += CELL_SZ
 			start_x.x += CELL_SZ
 			end_x.x += CELL_SZ
-
-var tower
-var space_state
+	bounds.y = end_y.y
+	print(bounds)
 
 func spawn_unit(pos, type):
 	match type:
@@ -41,6 +49,7 @@ func spawn_unit(pos, type):
 	point.position = tower.position
 	if(!space_state.intersect_point(point)):
 		add_child(tower)
+		print("Tower-Pos: " + str(tower.position))
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
