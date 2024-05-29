@@ -2,8 +2,9 @@ extends Node2D
 
 const CELL_SZ = 100
 const BOARD_SZ = 5
-var bounds: Vector2i
+var lbounds: Vector2
 
+var ubounds: Vector2
 var tower_scene: PackedScene
 var enemy_scene: PackedScene
 
@@ -20,12 +21,13 @@ func _ready():
 	pass
 
 func _draw():
-	var start_y = Vector2i(floor(vp_size.x/2)-(CELL_SZ*BOARD_SZ)/2,0).snapped(Vector2.ONE * CELL_SZ)
-	bounds.x = start_y.x
-	var end_y = Vector2i(floor(vp_size.x/2) + (CELL_SZ*BOARD_SZ)/2,0).snapped(Vector2.ONE * CELL_SZ)
+	var start_y = Vector2(floor(vp_size.x/2)-(CELL_SZ*BOARD_SZ)/2,0).snapped(Vector2.ONE * CELL_SZ)
+	lbounds.x = start_y.x + CELL_SZ/2
+	var end_y = Vector2(floor(vp_size.x/2) + (CELL_SZ*BOARD_SZ)/2,0).snapped(Vector2.ONE * CELL_SZ)
 	
-	var start_x = Vector2i(floor(vp_size.x/2)-(CELL_SZ*BOARD_SZ)/2, 0).snapped(Vector2.ONE * CELL_SZ)
-	var end_x = Vector2i(floor(vp_size.x/2)-(CELL_SZ*BOARD_SZ)/2, CELL_SZ*BOARD_SZ).snapped(Vector2.ONE * CELL_SZ)
+	var start_x = Vector2(floor(vp_size.x/2)-(CELL_SZ*BOARD_SZ)/2, 0).snapped(Vector2.ONE * CELL_SZ)
+	var end_x = Vector2(floor(vp_size.x/2)-(CELL_SZ*BOARD_SZ)/2, CELL_SZ*BOARD_SZ).snapped(Vector2.ONE * CELL_SZ)
+	lbounds.y = end_x.y - CELL_SZ/2
 	for n in BOARD_SZ+1:
 			draw_line(start_y,end_y, Color.WHITE, 1.0)
 			draw_line(start_x, end_x, Color.WHITE, 1.0)
@@ -33,8 +35,9 @@ func _draw():
 			end_y.y += CELL_SZ
 			start_x.x += CELL_SZ
 			end_x.x += CELL_SZ
-	bounds.y = end_y.y
-	print(bounds)
+	ubounds.x = start_x.x - CELL_SZ - CELL_SZ/2
+	ubounds.y = start_y.y - CELL_SZ - CELL_SZ/2
+	print(str(lbounds) + str(ubounds))
 
 func spawn_unit(pos, type):
 	match type:
@@ -47,9 +50,12 @@ func spawn_unit(pos, type):
 	var point = PhysicsPointQueryParameters2D.new()
 	point.set_collide_with_areas(true)
 	point.position = tower.position
-	if(!space_state.intersect_point(point)):
+	if (!space_state.intersect_point(point) 
+	&& point.position.x >= lbounds.x 
+	&& point.position.y <= lbounds.y 
+	&& point.position.x <= ubounds.x 
+	&& point.position.y <= ubounds.y):
 		add_child(tower)
-		print("Tower-Pos: " + str(tower.position))
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton:
