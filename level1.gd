@@ -1,42 +1,54 @@
 extends Node2D
 
-@export var unit_scene: PackedScene
+var tower_scene: PackedScene
+var enemy_scene: PackedScene
 
 var vp_size = DisplayServer.screen_get_size()
+@onready var unit_select = $CanvasLayer/UnitSelect
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass
 
-const CELL_HEIGHT = 100
+const CELL_SZ = 100
 func _draw():
-	var start_y = Vector2(0,CELL_HEIGHT)
-	var end_y = Vector2(vp_size.x,CELL_HEIGHT)
-	var start_x = Vector2(CELL_HEIGHT,0)
-	var end_x = Vector2(CELL_HEIGHT, vp_size.y)
+	var start_y = Vector2(0,CELL_SZ)
+	var end_y = Vector2(vp_size.x,CELL_SZ)
+	var start_x = Vector2(CELL_SZ,0)
+	var end_x = Vector2(CELL_SZ, vp_size.y)
 	for n in 5:
 			draw_line(start_y,end_y, Color.WHITE, 1.0)
 			draw_line(start_x, end_x, Color.WHITE, 1.0)
-			start_y.y += CELL_HEIGHT
-			end_y.y += CELL_HEIGHT
-			start_x.x += CELL_HEIGHT
-			end_x.x += CELL_HEIGHT
+			start_y.y += CELL_SZ
+			end_y.y += CELL_SZ
+			start_x.x += CELL_SZ
+			end_x.x += CELL_SZ
 
-var unit
+var tower
 var space_state
+
+func spawn_unit(pos, type):
+	match type:
+		"Archer":
+			tower_scene = load("res://Units/archer.tscn")
+		"Mage":
+			tower_scene = load("res://Units/mage.tscn")
+	tower = tower_scene.instantiate()
+	tower.position = pos
+	var point = PhysicsPointQueryParameters2D.new()
+	point.set_collide_with_areas(true)
+	point.position = tower.position
+	if(!space_state.intersect_point(point)):
+		add_child(tower)
+
 func _input(event):
 	if event is InputEventMouseButton:
 		if !event.is_pressed() && event.button_index == MOUSE_BUTTON_LEFT:
-			unit = unit_scene.instantiate()
-			
-			unit.position = floor(event.position/CELL_HEIGHT)*CELL_HEIGHT + (Vector2.ONE * CELL_HEIGHT/2)
-			var point = PhysicsPointQueryParameters2D.new()
-			point.set_collide_with_areas(true)
-			point.position = unit.position
-			if(!space_state.intersect_point(point)):
-				add_child(unit)
-			
+			var pos = floor(event.position/CELL_SZ)*CELL_SZ + (Vector2.ONE * CELL_SZ/2)
+			var selected_unit = unit_select.selected_unit
+			if selected_unit:
+				spawn_unit(pos, selected_unit)
 	elif event is InputEventMouseMotion:
 		pass
 	

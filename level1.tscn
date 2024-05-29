@@ -1,11 +1,43 @@
-[gd_scene load_steps=3 format=3 uid="uid://cc1qt4xnl1xll"]
+[gd_scene load_steps=4 format=3 uid="uid://cc1qt4xnl1xll"]
 
 [ext_resource type="Script" path="res://level1.gd" id="1_lnqtw"]
-[ext_resource type="PackedScene" uid="uid://dr0rgpwghhyy1" path="res://Units/mage.tscn" id="1_sdf61"]
+[ext_resource type="Script" path="res://UnitSelect.gd" id="2_n81ao"]
+[ext_resource type="ButtonGroup" uid="uid://bxpahny670mb1" path="res://UnitSelection.tres" id="2_umbut"]
 
 [node name="Node2D" type="Node2D"]
 scale = Vector2(0.999198, 0.999802)
 script = ExtResource("1_lnqtw")
-unit_scene = ExtResource("1_sdf61")
+
+[node name="MobTimer" type="Timer" parent="."]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UnitSelect" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_n81ao")
+group = ExtResource("2_umbut")
+
+[node name="Mage" type="Button" parent="CanvasLayer/UnitSelect"]
+layout_mode = 0
+offset_left = 132.0
+offset_top = 521.0
+offset_right = 260.0
+offset_bottom = 649.0
+toggle_mode = true
+button_group = ExtResource("2_umbut")
+text = "Mage"
+
+[node name="Archer" type="Button" parent="CanvasLayer/UnitSelect"]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 522.0
+offset_right = 130.0
+offset_bottom = 650.0
+toggle_mode = true
+button_group = ExtResource("2_umbut")
+text = "Archer"
 
 [connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]
