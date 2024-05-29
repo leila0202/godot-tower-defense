@@ -9,7 +9,7 @@ var lvl
 
 func _init():
 	lp = MAXLIVE
-	dmg = 4
+	dmg = 3
 	reach = 3
 	price = 5
 	lvl = 1

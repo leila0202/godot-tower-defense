@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://dr0rgpwghhyy1"]
 
-[ext_resource type="Texture2D" uid="uid://yerw4suptyo6" path="res://icon.svg" id="1_el72g"]
 [ext_resource type="Script" path="res://Units/mage.gd" id="1_sxm5w"]
+[ext_resource type="Texture2D" uid="uid://cstr14h86i2hq" path="res://mage.png" id="2_e6uir"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_spfm0"]
 size = Vector2(100, 100)
@@ -14,4 +14,4 @@ shape = SubResource("RectangleShape2D_spfm0")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.782228, 0.797099)
-texture = ExtResource("1_el72g")
+texture = ExtResource("2_e6uir")
