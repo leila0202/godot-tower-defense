@@ -4,6 +4,7 @@ extends Node2D
 
 var vp_size = DisplayServer.screen_get_size()
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass
@@ -23,26 +24,28 @@ func _draw():
 			end_x.x += CELL_HEIGHT
 
 var unit
-
+var space_state
 func _input(event):
 	if event is InputEventMouseButton:
 		if !event.is_pressed() && event.button_index == MOUSE_BUTTON_LEFT:
 			unit = unit_scene.instantiate()
-			unit.position = floor(event.position/CELL_HEIGHT)*CELL_HEIGHT + (Vector2.ONE * CELL_HEIGHT/2)
-			print(unit.position)
-			add_child(unit)
 			
-			if _hovered(unit):
-				unit.queue_free()
-				print("was freeed")
-			else:
-				print("miau")
+			unit.position = floor(event.position/CELL_HEIGHT)*CELL_HEIGHT + (Vector2.ONE * CELL_HEIGHT/2)
+			var point = PhysicsPointQueryParameters2D.new()
+			point.set_collide_with_areas(true)
+			point.position = unit.position
+			if(!space_state.intersect_point(point)):
+				add_child(unit)
+			
 	elif event is InputEventMouseMotion:
 		pass
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
+
+func _physics_process(delta: float):
+	space_state = get_world_2d().direct_space_state
 
 func _hovered():
 	print("miau")
