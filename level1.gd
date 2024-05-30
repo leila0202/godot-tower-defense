@@ -6,8 +6,6 @@ var lbounds: Vector2
 
 var ubounds: Vector2
 var tower_scene: PackedScene
-var enemy_scene: PackedScene
-var enemy
 
 var tower
 var space_state
@@ -19,11 +17,7 @@ var space_state
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	enemy_scene = load("res://Units/goblin.tscn")
-	enemy = enemy_scene.instantiate()
-	var pos = Vector2(750, 550)
-	enemy.position = pos
-	add_child(enemy)
+	pass
 	
 
 func _draw():
@@ -87,3 +81,4 @@ func _hovered():
 func _on_child_entered_tree(node):
 	
 	print(str(node.get_instance_id()) + " was added")
+
