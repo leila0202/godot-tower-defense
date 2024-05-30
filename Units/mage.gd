@@ -24,7 +24,6 @@ func _process(delta):
 		print("LP: " + str(lp) + " dmg: " + str(dmg))
 	if Input.is_action_just_pressed("ui_cancel"): 
 		lp -= 1
-	get_rid()
 
 
 
