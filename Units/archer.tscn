@@ -1,13 +1,13 @@
 [gd_scene load_steps=4 format=3 uid="uid://fk2blt5ft4mm"]
 
-[ext_resource type="Script" path="res://Units/mage.gd" id="1_jgv53"]
+[ext_resource type="Script" path="res://Units/archer.gd" id="1_2f5g7"]
 [ext_resource type="Texture2D" uid="uid://gdo6lw1d83pe" path="res://archer.png" id="2_djwfw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_spfm0"]
 size = Vector2(100, 100)
 
 [node name="Archer" type="Area2D"]
-script = ExtResource("1_jgv53")
+script = ExtResource("1_2f5g7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_spfm0")
