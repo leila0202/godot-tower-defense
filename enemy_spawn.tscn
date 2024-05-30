@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://cjofb7q1yb08t"]
+
+[ext_resource type="Script" path="res://EnemySpawn.gd" id="1_vq1r3"]
+[ext_resource type="PackedScene" uid="uid://d0w84mvvb127n" path="res://Units/goblin.tscn" id="2_lu6i4"]
+
+[node name="EnemySpawn" type="PathFollow2D"]
+position = Vector2(737.49, 484.84)
+rotation = -1.59223
+script = ExtResource("1_vq1r3")
+
+[node name="Goblin" parent="." instance=ExtResource("2_lu6i4")]
+
+[node name="_Timer_114116" type="Timer" parent="."]
+wait_time = 0.2

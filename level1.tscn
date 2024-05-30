@@ -1,14 +1,21 @@
-[gd_scene load_steps=4 format=3 uid="uid://cc1qt4xnl1xll"]
+[gd_scene load_steps=8 format=3 uid="uid://cc1qt4xnl1xll"]
 
 [ext_resource type="Script" path="res://level1.gd" id="1_lnqtw"]
 [ext_resource type="Script" path="res://UnitSelect.gd" id="2_n81ao"]
 [ext_resource type="ButtonGroup" uid="uid://bxpahny670mb1" path="res://UnitSelection.tres" id="2_umbut"]
+[ext_resource type="Texture2D" uid="uid://bjkcqjvthxyni" path="res://map.png" id="4_ofijw"]
+[ext_resource type="Script" path="res://EnemyPath.gd" id="5_yd38w"]
+[ext_resource type="PackedScene" uid="uid://cjofb7q1yb08t" path="res://enemy_spawn.tscn" id="6_06qeo"]
+
+[sub_resource type="Curve2D" id="Curve2D_r48ku"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 737.49, 484.84, 0, 0, 0, 0, 735.513, 392.615, 0, 0, 0, 0, 738.479, 38.6467, 0, 0, 0, 0, 339.087, 41.2817, 0, 0, 0, 0, 337.11, 396.129, 0, 0, 0, 0, 719.696, 390.859, 0, 0, 0, 0, 737.49, 484.84)
+}
+point_count = 7
 
 [node name="Node2D" type="Node2D"]
 scale = Vector2(0.999198, 0.999802)
 script = ExtResource("1_lnqtw")
-
-[node name="MobTimer" type="Timer" parent="."]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -39,5 +46,19 @@ offset_bottom = 650.0
 toggle_mode = true
 button_group = ExtResource("2_umbut")
 text = "Archer"
+
+[node name="Map" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(2.00161, 1.0002)
+texture = ExtResource("4_ofijw")
+centered = false
+
+[node name="EnemyPath" type="Path2D" parent="."]
+scale = Vector2(1.01235, 1.13874)
+curve = SubResource("Curve2D_r48ku")
+script = ExtResource("5_yd38w")
+
+[node name="EnemySpawn" parent="EnemyPath" instance=ExtResource("6_06qeo")]
+position = Vector2(737.49, 484.84)
 
 [connection signal="child_entered_tree" from="." to="." method="_on_child_entered_tree"]
